@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Libs and tools I love</title>
+
+  <link type="text/css" rel="stylesheet" href="css/site.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.7/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.7/angular-resource.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.7/angular-route.min.js"></script>
+  <script src="https://cdn.firebase.com/v0/firebase.js"></script>
+  <script src="https://cdn.firebase.com/libs/angularfire/0.5.0/angularfire.min.js"></script>
+
+  <script src="js/main.js"></script>
+
+</head>
+<body>
+
+ <div class='container' ng-app="ithings">
+  <h1 class='main-title'>Some Things</h1>
+  <h2 class='main-title-smaller'>Web libs and tools to never forget</h2>
+  <div ng-view></div>
+
+
+  <footer>Just refactored demo from <a class="brand" href="http://angularjs.org"><img src='https://angularjs.org/img/AngularJS-small.png'></a></footer>
+
+
+  <!-- CACHE FILE: list.html -->
+  <script type="text/ng-template" id="list.html">
+
+   <a class='button add-button' href="#/new">add</a>
+    <div class='search-add'>
+      <input type="text" ng-model="search" class="search-query" placeholder="Search">
+    </div>
+
+
+    <ul class='things-list'>
+      <li class='thing' ng-repeat="thing in things | orderByPriority | filter:search | orderBy:'name'">
+        <h2 class='thing-title'><a href="{{thing.site}}" target="_blank">{{thing.name}}</a></h2>
+        <a href="#/edit/{{thing.$id}}" class='edit-link'>edit</a>
+        <div class='tags'>{{thing.tags}}</div>
+
+      </li>
+    </ul>
+
+  </script>
+
+
+
+  <!-- CACHE FILE: detail.html -->
+  <script type="text/ng-template" id="detail.html">
+    <form name="myForm">
+      <div class="control-group" ng-class="{error: myForm.name.$invalid && !myForm.name.$pristine}">
+        <label>Name</label>
+        <input type="text" name="name" ng-model="thing.name" required>
+        <span ng-show="myForm.name.$error.required && !myForm.name.$pristine" class="help-inline">
+            Required {{myForm.name.$pristine}}</span>
+      </div>
+
+      <div class="control-group" ng-class="{error: myForm.site.$invalid && !myForm.site.$pristine}">
+        <label>Website</label>
+        <input type="url" name="site" ng-model="thing.site" required>
+        <span ng-show="myForm.site.$error.required && !myForm.site.$pristine" class="help-inline">
+            Required</span>
+        <span ng-show="myForm.site.$error.url" class="help-inline">
+            Not a URL</span>
+      </div>
+
+      <label>Tags</label>
+      <textarea name="tags" ng-model="thing.tags"></textarea>
+
+
+      <br>
+      <a href="#/" class="btn">Cancel</a>
+      <button ng-click="save()" ng-disabled="myForm.$invalid"
+              class="btn btn-primary">Save</button>
+      <button ng-click="destroy()"
+              ng-show="thing.$remove" class="btn btn-danger">Delete</button>
+    </form>
+  </script>
+</div>
+
+
+
+</body>
+</html>
