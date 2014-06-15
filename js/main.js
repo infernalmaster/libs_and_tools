@@ -1,7 +1,15 @@
 (function() {
-  angular.module("ithings", ["ngRoute", "firebase"]).value("fbURL", "https://interesting-things.firebaseio.com/things/").factory("Things", function($firebase, fbURL) {
+  var myApp;
+
+  myApp = angular.module("ithings", ["ngRoute", "firebase"]);
+
+  myApp.value("fbURL", "https://interesting-things.firebaseio.com/things/");
+
+  myApp.factory("Things", function($firebase, fbURL) {
     return $firebase(new Firebase(fbURL));
-  }).config(function($routeProvider) {
+  });
+
+  myApp.config(function($routeProvider) {
     return $routeProvider.when("/", {
       controller: "ListCtrl",
       templateUrl: "list.html"
@@ -14,9 +22,13 @@
     }).otherwise({
       redirectTo: "/"
     });
-  }).controller("ListCtrl", function($scope, Things) {
+  });
+
+  myApp.controller("ListCtrl", function($scope, Things) {
     return $scope.things = Things;
-  }).controller("CreateCtrl", function($scope, $location, $timeout, Things) {
+  });
+
+  myApp.controller("CreateCtrl", function($scope, $location, $timeout, Things) {
     return $scope.save = function() {
       return Things.$add($scope.thing, function() {
         return $timeout(function() {
@@ -24,7 +36,9 @@
         });
       });
     };
-  }).controller("EditCtrl", function($scope, $location, $routeParams, $firebase, fbURL) {
+  });
+
+  myApp.controller("EditCtrl", function($scope, $location, $routeParams, $firebase, fbURL) {
     var thingUrl;
     thingUrl = fbURL + $routeParams.thingId;
     $scope.thing = $firebase(new Firebase(thingUrl));

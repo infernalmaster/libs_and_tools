@@ -1,12 +1,17 @@
-angular.module("ithings", [
+myApp = angular.module("ithings", [
   "ngRoute"
   "firebase"
-]).value("fbURL", "https://interesting-things.firebaseio.com/things/"
-).factory("Things", ($firebase, fbURL) ->
+])
+
+
+myApp.value "fbURL", "https://interesting-things.firebaseio.com/things/"
+
+
+myApp.factory "Things", ($firebase, fbURL) ->
   $firebase new Firebase(fbURL)
 
 
-).config(($routeProvider) ->
+myApp.config ($routeProvider) ->
   $routeProvider.when("/",
     controller: "ListCtrl"
     templateUrl: "list.html"
@@ -19,17 +24,20 @@ angular.module("ithings", [
   ).otherwise redirectTo: "/"
 
 
-).controller("ListCtrl", ($scope, Things) ->
+
+
+myApp.controller "ListCtrl", ($scope, Things) ->
   $scope.things = Things
 
 
-).controller("CreateCtrl", ($scope, $location, $timeout, Things) ->
+myApp.controller "CreateCtrl", ($scope, $location, $timeout, Things) ->
   $scope.save = ->
     Things.$add $scope.thing, ->
       $timeout ->
         $location.path "/"
 
-).controller "EditCtrl", ($scope, $location, $routeParams, $firebase, fbURL) ->
+
+myApp.controller "EditCtrl", ($scope, $location, $routeParams, $firebase, fbURL) ->
   thingUrl = fbURL + $routeParams.thingId
   $scope.thing = $firebase(new Firebase(thingUrl))
   $scope.destroy = ->
