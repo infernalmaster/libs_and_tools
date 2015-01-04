@@ -21,8 +21,10 @@
   <script type="text/ng-template" id="list.html">
 
     <div class="login-logout-panel">
+      <span ng-show="user" class='login-explain'>{{user.github.displayName}}</span>
       <button ng-hide="user" ng-click="auth.$authWithOAuthPopup('github')">Login with Github</button>
       <button ng-show="user" ng-click="auth.$unauth()">Logout</button>
+      <p ng-hide="user" class='login-explain'>Don't event try :-)</p>
     </div>
 
 

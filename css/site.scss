@@ -727,7 +727,15 @@ footer img{
   right: 10px;
   top: 10px;
   opacity: 0;
+  text-align: right;
   &:hover {
     opacity: 1;
   }
+  button {
+    font-size: 12px;
+  }
+}
+.login-explain {
+  margin: 0;
+  font-size: 10px;
 }

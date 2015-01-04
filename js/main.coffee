@@ -35,7 +35,9 @@ myApp.controller "ListCtrl", ($scope, Things, Auth) ->
   $scope.things = Things.$asArray()
 
   $scope.auth = Auth
-  $scope.user = $scope.auth.$getAuth()
+  $scope.auth.$onAuth ->
+    $scope.$evalAsync ->
+      $scope.user = $scope.auth.$getAuth()
 
 
 myApp.controller "CreateCtrl", ($scope, $location, Things) ->
