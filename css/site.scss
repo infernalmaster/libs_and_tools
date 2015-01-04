@@ -721,3 +721,13 @@ footer img{
   vertical-align: middle;
   margin-left: 10px;
 }
+
+.login-logout-panel {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  opacity: 0;
+  &:hover {
+    opacity: 1;
+  }
+}

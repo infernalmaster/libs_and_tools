@@ -4,11 +4,16 @@ myApp = angular.module("ithings", [
 ])
 
 
-myApp.value "fbURL", "https://interesting-things.firebaseio.com/things/"
+myApp.value "fbURL", "https://interesting-things.firebaseio.com"
 
+
+myApp.factory "Auth", (fbURL, $firebaseAuth) ->
+  $firebaseAuth new Firebase(fbURL)
 
 myApp.factory "Things", ($firebase, fbURL) ->
-  $firebase new Firebase(fbURL)
+  $firebase new Firebase("#{fbURL}/things/")
+
+
 
 
 myApp.config ($routeProvider) ->
@@ -26,24 +31,25 @@ myApp.config ($routeProvider) ->
 
 
 
-myApp.controller "ListCtrl", ($scope, Things) ->
-  $scope.things = Things
+myApp.controller "ListCtrl", ($scope, Things, Auth) ->
+  $scope.things = Things.$asArray()
+
+  $scope.auth = Auth
+  $scope.user = $scope.auth.$getAuth()
 
 
-myApp.controller "CreateCtrl", ($scope, $location, $timeout, Things) ->
+myApp.controller "CreateCtrl", ($scope, $location, Things) ->
   $scope.save = ->
-    Things.$add $scope.thing, ->
-      $timeout ->
-        $location.path "/"
+    Things.$asArray().$add( $scope.thing ).then( -> $location.path "/" )
 
 
-myApp.controller "EditCtrl", ($scope, $location, $routeParams, $firebase, fbURL) ->
-  thingUrl = fbURL + $routeParams.thingId
-  $scope.thing = $firebase(new Firebase(thingUrl))
+myApp.controller "EditCtrl", ($scope, $location, $routeParams, Things) ->
+  things = Things.$asArray()
+  things.$loaded().then ->
+    $scope.thing = things.$getRecord($routeParams.thingId)
+
   $scope.destroy = ->
-    $scope.thing.$remove()
-    $location.path "/"
+    things.$remove($scope.thing).then( -> $location.path "/" )
 
   $scope.save = ->
-    $scope.thing.$save()
-    $location.path "/"
+    things.$save($scope.thing).then( -> $location.path "/" )

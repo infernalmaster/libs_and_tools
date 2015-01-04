@@ -20,18 +20,23 @@
   <!-- CACHE FILE: list.html -->
   <script type="text/ng-template" id="list.html">
 
-   <a class='button add-button' href="#/new">add</a>
+    <div class="login-logout-panel">
+      <button ng-hide="user" ng-click="auth.$authWithOAuthPopup('github')">Login with Github</button>
+      <button ng-show="user" ng-click="auth.$unauth()">Logout</button>
+    </div>
+
+
+    <a class='button add-button' href="#/new">add</a>
     <div class='search-add'>
       <input type="text" ng-model="search" class="search-query" placeholder="Search">
     </div>
 
 
     <ul class='things-list'>
-      <li class='thing' ng-repeat="thing in things | orderByPriority | filter:search | orderBy:'name'">
+      <li class='thing' ng-repeat="thing in things | filter:search">
         <h2 class='thing-title'><a href="{{thing.site}}" target="_blank">{{thing.name}}</a></h2>
-        <a href="#/edit/{{thing.$id}}" class='edit-link'>edit</a>
+        <a ng-show="user" href="#/edit/{{thing.$id}}" class='edit-link'>edit</a>
         <div class='tags'>{{thing.tags}}</div>
-
       </li>
     </ul>
 
@@ -66,17 +71,16 @@
       <a href="#/" class="btn">Cancel</a>
       <button ng-click="save()" ng-disabled="myForm.$invalid"
               class="btn btn-primary">Save</button>
-      <button ng-click="destroy()"
-              ng-show="thing.$remove" class="btn btn-danger">Delete</button>
+      <button ng-click="destroy()" class="btn btn-danger">Delete</button>
     </form>
   </script>
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.11/angular.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.11/angular-resource.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.11/angular-route.min.js"></script>
-<script src="https://cdn.firebase.com/v0/firebase.js"></script>
-<script src="https://cdn.firebase.com/libs/angularfire/0.5.0/angularfire.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.7/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.7/angular-resource.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.7/angular-route.min.js"></script>
+<script src="https://cdn.firebase.com/js/client/2.0.4/firebase.js"></script>
+<script src="https://cdn.firebase.com/libs/angularfire/0.9.0/angularfire.min.js"></script>
 
 <script src="js/main.js"></script>
 
