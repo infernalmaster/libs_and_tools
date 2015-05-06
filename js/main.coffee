@@ -34,6 +34,20 @@ myApp.config ($routeProvider) ->
 myApp.controller "ListCtrl", ($scope, Things, Auth) ->
   $scope.things = Things.$asArray()
 
+  $scope.myComparator = (actual, expected) ->
+    if actual == undefined
+        # No substring matching against `undefined`
+        return false
+    if actual == null or expected == null
+        # No substring matching against `null`; only match against `null`
+        return actual == expected
+
+    actual = ('' + actual).toLowerCase()
+    expected = ('' + expected).toLowerCase()
+
+    expected.split(' ').every (one) -> actual.indexOf(one) != -1
+
+
   $scope.auth = Auth
   $scope.auth.$onAuth ->
     $scope.$evalAsync ->

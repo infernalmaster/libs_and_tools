@@ -35,7 +35,7 @@
 
 
     <ul class='things-list'>
-      <li class='thing' ng-repeat="thing in things | filter:search">
+      <li class='thing' ng-repeat="thing in things | filter:search:myComparator">
         <h2 class='thing-title'><a href="{{thing.site}}" target="_blank">{{thing.name}}</a></h2>
         <a ng-show="user" href="#/edit/{{thing.$id}}" class='edit-link'>edit</a>
         <div class='tags'>{{thing.tags}}</div>
